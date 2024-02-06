@@ -65,7 +65,7 @@ const Footer = () => {
             </Link>
           ))}
         </Box>
-        <Typography variant="body2" textAlign={"center"} color={"gray"}>
+        <Typography variant="body2" textAlign="center" color="gray">
           &copy; {new Date().getFullYear()} All rights reserved. Designed by
           Saidur Rahaman.
         </Typography>
