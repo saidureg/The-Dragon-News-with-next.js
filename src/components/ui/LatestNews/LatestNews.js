@@ -8,30 +8,37 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import topNews from "@/assets/Top_News.jpg";
-import topNews2 from "@/assets/Top_News2.avif";
+import { getAllNews } from "@/utils/getAllNews";
 
-const LatestNews = () => {
+const LatestNews = async () => {
+  const { data } = await getAllNews();
+
   return (
     <Box>
       <Card>
         <CardActionArea>
           <CardMedia>
-            <Image src={topNews} alt="Top News" width={800} height={500} />
+            <Image
+              src={data[0].thumbnail_url}
+              alt="Top News"
+              width={800}
+              height={500}
+            />
           </CardMedia>
           <CardContent>
-            <p className="bg-red-500 px-2 text-white w-[100px] rounded my-3">
-              Technology
-            </p>
+            <span className="bg-red-500 p-1 text-white rounded my-3">
+              {data[0].category}
+            </span>
             <Typography gutterBottom variant="h5" component="div">
-              New Breakthrough in Quantum Computing
+              {data[0].title}
             </Typography>
             <Typography className="my-3" gutterBottom>
-              By John Smith - 2023-08-21
+              By {data[0].author.name} - {data[0].author.published_date}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
+              {data[0].details.length > 200
+                ? data[0].details.slice(0, 200) + "..."
+                : data[0].details}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -43,102 +50,47 @@ const LatestNews = () => {
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
-        <Grid item xs={6}>
-          <Card>
-            <CardActionArea>
-              <CardMedia>
-                <Image src={topNews2} alt="Top News" width={800} height={500} />
-              </CardMedia>
-              <CardContent>
-                <p className="bg-red-500 px-2 text-white w-[100px] rounded my-3">
-                  Technology
-                </p>
-                <Typography gutterBottom variant="h5" component="div">
-                  New Breakthrough in Quantum Computing
-                </Typography>
-                <Typography className="my-3" gutterBottom>
-                  By John Smith - 2023-08-21
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card>
-            <CardActionArea>
-              <CardMedia>
-                <Image src={topNews2} alt="Top News" width={800} height={500} />
-              </CardMedia>
-              <CardContent>
-                <p className="bg-red-500 px-2 text-white w-[100px] rounded my-3">
-                  Technology
-                </p>
-                <Typography gutterBottom variant="h5" component="div">
-                  New Breakthrough in Quantum Computing
-                </Typography>
-                <Typography className="my-3" gutterBottom>
-                  By John Smith - 2023-08-21
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card>
-            <CardActionArea>
-              <CardMedia>
-                <Image src={topNews2} alt="Top News" width={800} height={500} />
-              </CardMedia>
-              <CardContent>
-                <p className="bg-red-500 px-2 text-white w-[100px] rounded my-3">
-                  Technology
-                </p>
-                <Typography gutterBottom variant="h5" component="div">
-                  New Breakthrough in Quantum Computing
-                </Typography>
-                <Typography className="my-3" gutterBottom>
-                  By John Smith - 2023-08-21
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card>
-            <CardActionArea>
-              <CardMedia>
-                <Image src={topNews2} alt="Top News" width={800} height={500} />
-              </CardMedia>
-              <CardContent>
-                <p className="bg-red-500 px-2 text-white w-[100px] rounded my-3">
-                  Technology
-                </p>
-                <Typography gutterBottom variant="h5" component="div">
-                  New Breakthrough in Quantum Computing
-                </Typography>
-                <Typography className="my-3" gutterBottom>
-                  By John Smith - 2023-08-21
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
+        {data.slice(1, 5).map((news) => (
+          <Grid key={news._id} item xs={6}>
+            <Card>
+              <CardActionArea>
+                <CardMedia
+                  sx={{
+                    "& img": {
+                      width: "100%",
+                      height: "250px",
+                    },
+                  }}
+                >
+                  <Image
+                    src={news.thumbnail_url}
+                    alt="Top News"
+                    width={800}
+                    height={100}
+                  />
+                </CardMedia>
+                <CardContent>
+                  <span className="bg-red-500 p-1 text-white rounded my-3">
+                    {news.category}
+                  </span>
+                  <Typography gutterBottom>
+                    {news.title.length > 30
+                      ? news.title.slice(0, 30) + "..."
+                      : news.title}
+                  </Typography>
+                  <Typography className="my-3" gutterBottom>
+                    By {news.author.name} - {news.author.published_date}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {news.details.length > 120
+                      ? news.details.slice(0, 120) + "..."
+                      : news.details}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );

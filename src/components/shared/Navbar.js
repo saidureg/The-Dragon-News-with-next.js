@@ -44,11 +44,16 @@ const navItems = [
   },
 ];
 
-function Navbar() {
+const Navbar = () => {
   return (
     <>
       <Header />
-      <AppBar position="static" className="bg-black">
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: "black",
+        }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Image
@@ -59,10 +64,10 @@ function Navbar() {
               height={100}
             />
 
-            <Box className="w-full text-center">
+            <Box className="w-full text-white text-center">
               {navItems.map((item) => (
                 <Link key={item} href={item.pathName}>
-                  <Button className="text-white">{item.route}</Button>
+                  <Button sx={{ color: "white" }}>{item.route}</Button>
                 </Link>
               ))}
             </Box>
@@ -96,5 +101,5 @@ function Navbar() {
       </AppBar>
     </>
   );
-}
+};
 export default Navbar;

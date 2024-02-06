@@ -12,7 +12,6 @@ import Link from "next/link";
 
 const DynamicNewsPage = async ({ searchParams }) => {
   const { data: categoryNews } = await getCategoryNews(searchParams.category);
-  console.log(categoryNews);
   return (
     <div className="my-5">
       <h1>
